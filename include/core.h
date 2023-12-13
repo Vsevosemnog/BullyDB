@@ -33,7 +33,7 @@ namespace Core
         long StructSize; // Struct size
         char TableName[MAX_TABLE_NAME_LEN]; // Table name
         long FieldCount; // Field count
-        long RecordSize; // Record size (Summ of all field sizes)
+        long RecordSize; // Record size (All field sizes sum)
         long RecordCount; // Record count
         DB_BULLYDB_FIELD FieldsInTable[BULLYDB_MAX_FIELDS]; // Field array
     } DB_BULLYDB_TABLE; // Table describe type

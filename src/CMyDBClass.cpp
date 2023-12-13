@@ -1,15 +1,16 @@
-#include "CMyDBClass.h"
+#include "../include/CMyDBClass.h"
 
-FILE* CMyDBClass::CreateDataBase(char* name)
+FILE* CMyDBClass::CreateDataBase(const char* name)
 {
-    FILE* file;
-    void* lpBullyDBBase = NULL;
-    long lenName = 0;
+    FILE* file; // Database file
+    void* lpBullyDBBase = NULL; // Database pointer
+    long lenName = 0; // Database name length
 
     lpBullyDBBase = &this->database;
     this->InitialClass();
 
     int i = 0;
+    // Copying database name into struct
     while((name[i] != 0) && (i < Core::MAX_BASE_NAME_LEN))
     {
         this->database.BaseName[i] = name[i];
@@ -18,7 +19,7 @@ FILE* CMyDBClass::CreateDataBase(char* name)
     this->database.BaseName[i] = '\0';
     lenName = i;
 
-    file = fopen(this->database.BaseName, "wb");
+    file = fopen(this->database.BaseName, "wb"); //Database file creation
     if (file == NULL)
     {
         printf("Unable to open file %s **\n", this->database.BaseName);
@@ -66,7 +67,7 @@ bool CMyDBClass::InitialClass()
     return true;
 }
 
-int CMyDBClass::CreateTable(char* name)
+int CMyDBClass::CreateTable(const char* name)
 {
     int iRet = 0;
     int i =0;
@@ -91,11 +92,45 @@ int CMyDBClass::CreateTable(char* name)
         if(file == NULL)
         {
             printf("Unable to create file %s **\n", name);
-            return NULL;
+            return -1;
         }
         fwrite(database, 0,0,file);
         this->database.TableCount++;
     }
 
     return iRet;
+}
+
+FILE* CMyDBClass::OpenDataBase(const char *name)
+{
+    FILE* file;
+    void* database = NULL;
+    long lenName = 0;
+    int i = 0;
+
+    database = &this->database;
+
+    file = fopen(name, "r+b");
+    if(file == NULL)
+    {
+        printf("Unable to open file %s **\n", this->database.BaseName);
+        return NULL;
+    }
+
+    fread(database,1,this->database.StructSize, file);
+    fclose(file);
+
+    return file;
+}
+
+bool CMyDBClass::CloseDataBase(FILE* file)
+{
+    void* database = NULL;
+    database = &this->database;
+
+    // Set file inner pointer to the beginning
+    fseek(file, 0, SEEK_SET);
+    fwrite(database, 1, this->database.StructSize, file);
+    fclose(file);
+    return true;
 }

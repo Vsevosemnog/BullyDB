@@ -7,15 +7,15 @@
 class CMyDBClass
 {
     public:
-        CMyDBClass();
-        virtual ~CMyDBClass();
+        CMyDBClass(){};
+        virtual ~CMyDBClass(){};
 
         bool InitialClass();
-        FILE* CreateDataBase(char* name);
-        FILE* OpenDataBase(char* name);
+        FILE* CreateDataBase(const char* name);
+        FILE* OpenDataBase(const char* name);
         bool CloseDataBase(FILE* file);
-        int CreateTable(char* name);
-        int CreateField(int IDTable, char* name, int type, int size, char* comment);
+        int CreateTable(const char* name);
+        int CreateField(int IDTable,const char* name, int type, int size,const char* comment);
         Core::DB_BULLYDB_BASE database;
 };
 #endif
