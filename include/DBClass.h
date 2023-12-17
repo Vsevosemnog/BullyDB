@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include "core.h"
 
-class CMyDBClass
+class DBClass
 {
     public:
-        CMyDBClass(){};
-        virtual ~CMyDBClass(){};
+        DBClass(){};
+        virtual ~DBClass(){};
 
         bool InitialClass();
         FILE* CreateDataBase(const char* name);

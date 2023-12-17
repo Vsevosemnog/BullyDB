@@ -17,7 +17,6 @@ namespace Core
     const int MAX_BASE_NAME_LEN = 256; // Max database name length
     const int MAX_COMMENTARY_LEN = 128; // Max commentary field length
 
-
     typedef struct tagDB_BullyDB_Field
     {
         long ID; // Unique field id 
@@ -45,6 +44,5 @@ namespace Core
         long TableCount; // Table count
         DB_BULLYDB_TABLE TablesInBase[BULLYDB_MAX_TABLE]; // Table array
     } DB_BULLYDB_BASE; // Database describe type
-
 }
 #endif

@@ -1,9 +1,9 @@
-#include "../include/CMyDBClass.h"
+#include "../include/DBClass.h"
 
 int main(int argc, char* argv[])
 {
-    CMyDBClass* testClass = new CMyDBClass();
-    //FILE* testFile = (*testClass).CreateDataBase("testDB");
-    FILE* testFile = (*testClass).OpenDataBase("testDB");
+    DBClass* testClass = new DBClass();
+    FILE* testFile = (*testClass).CreateDataBase("testDB");
+    //FILE* testFile = (*testClass).OpenDataBase("testDB");
     return 0;
 }

@@ -4,6 +4,5 @@ testDB
 CMakeCache.txt
 cmake_install.cmake
 CMakeFiles
-build/**
-!build/**/
-!build/.gitkeep
+build/Debug/*
+build/Release/*

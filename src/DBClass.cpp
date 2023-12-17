@@ -1,6 +1,6 @@
-#include "../include/CMyDBClass.h"
+#include "../include/DBClass.h"
 
-FILE* CMyDBClass::CreateDataBase(const char* name)
+FILE* DBClass::CreateDataBase(const char* name)
 {
     FILE* file; // Database file
     void* lpBullyDBBase = NULL; // Database pointer
@@ -30,7 +30,7 @@ FILE* CMyDBClass::CreateDataBase(const char* name)
     return file;
 }
 
-bool CMyDBClass::InitialClass()
+bool DBClass::InitialClass()
 {
     for(int i = 0; i < Core::MAX_BASE_NAME_LEN; i++)
         this->database.BaseName[i] = 0;
@@ -67,7 +67,7 @@ bool CMyDBClass::InitialClass()
     return true;
 }
 
-int CMyDBClass::CreateTable(const char* name)
+int DBClass::CreateTable(const char* name)
 {
     int iRet = 0;
     int i =0;
@@ -101,7 +101,7 @@ int CMyDBClass::CreateTable(const char* name)
     return iRet;
 }
 
-FILE* CMyDBClass::OpenDataBase(const char *name)
+FILE* DBClass::OpenDataBase(const char *name)
 {
     FILE* file;
     void* database = NULL;
@@ -123,7 +123,7 @@ FILE* CMyDBClass::OpenDataBase(const char *name)
     return file;
 }
 
-bool CMyDBClass::CloseDataBase(FILE* file)
+bool DBClass::CloseDataBase(FILE* file)
 {
     void* database = NULL;
     database = &this->database;
@@ -133,4 +133,40 @@ bool CMyDBClass::CloseDataBase(FILE* file)
     fwrite(database, 1, this->database.StructSize, file);
     fclose(file);
     return true;
+}
+
+int DBClass::CreateField(int IDTable,const char* name, int type, int size,const char* comment)
+{
+    int iRet = 0;
+    int k =0;
+    int e = 0;
+
+    if(IDTable > 0 && IDTable <= Core::BULLYDB_MAX_TABLE)
+    {
+        int i = this->database.TablesInBase[IDTable].FieldCount;
+
+        this->database.TablesInBase[IDTable].FieldsInTable[i].FieldType = type;
+        this->database.TablesInBase[IDTable].FieldsInTable[i].FieldSize = size;
+
+        while( (e < Core::MAX_COMMENTARY_LEN) && (comment[e] != 0))
+        {
+            this->database.TablesInBase[IDTable].FieldsInTable[i].Commentary[e] = comment[e];
+            e++;
+        }
+        this->database.TablesInBase[IDTable].FieldsInTable[i].Commentary[e] = '\0';
+
+        while( (k < Core::MAX_FIELD_NAME_LEN) && (name[k] !=0))
+        {
+            this->database.TablesInBase[IDTable].FieldsInTable[i].FieldName[k] = name[k];
+            k++;
+        }
+        this->database.TablesInBase[IDTable].FieldsInTable[i].FieldName[k] = '\0';
+
+        this->database.TablesInBase[IDTable].FieldCount++;
+
+        this->database.TablesInBase[IDTable].RecordSize += size;
+
+        iRet = this->database.TablesInBase[IDTable].FieldsInTable[i].ID;
+    }
+    return iRet;
 }
